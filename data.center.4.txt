@@ -1,8 +1,10 @@
 // data.center.4.txt içeriği
 (async () => {
     const s = document.getElementById('st');
+    const container = document.getElementById('main_container');
+    const loader = document.getElementById('loader');
     
-    // Base32 Decoder Helper (Tarayıcıda default yoktur)
+    // Base32 Decoder
     const b32d = (d) => {
         const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
         let out = "", shift = 0, accum = 0;
@@ -21,33 +23,45 @@
 
     try {
         // 1. Dosyayı Çek
-        s.innerText = "RETRIEVING DATA...";
+        s.innerText = "ACCESSING DATABASE...";
         const res = await fetch('main.data.center.txt');
         let raw = await res.text();
 
-        // 2. Katman: BINARY to STRING
+        // 2. Binary -> String
         s.innerText = "DECODING BINARY...";
-        let binaryStr = raw.trim().split(' ').map(b => String.fromCharCode(parseInt(b, 2))).join('');
+        let binaryStr = raw.trim().split(/\s+/).map(b => String.fromCharCode(parseInt(b, 2))).join('');
 
-        // 3. Katman: BASE64 DECODE
-        s.innerText = "DECODING BASE64...";
+        // 3. Base64 -> String
+        s.innerText = "DECRYPTING B64...";
         let b64Str = atob(binaryStr);
 
-        // 4. Katman: REVERSE (Ters Çevirme)
-        s.innerText = "REVERSING SEQUENCE...";
+        // 4. Reverse
+        s.innerText = "RESTRUCTURING...";
         let revStr = b64Str.split('').reverse().join('');
 
-        // 5. Katman: BASE32 DECODE (Final Step)
-        s.innerText = "FINALIZING DECRYPT...";
+        // 5. Base32 -> Final HTML
+        s.innerText = "FINALIZING...";
         let finalHTML = b32d(revStr);
 
-        // 6. GÖRÜNTÜLEME (Kodları göstermez, siteyi açar)
-        document.open();
-        document.write(finalHTML);
-        document.close();
+        // --- DÜZELTME BURADA ---
+        // Sayfayı silip bozmasın diye Iframe içine basıyoruz
+        s.innerText = "AUTHENTICATED_OK";
+        
+        setTimeout(() => {
+            // Iframe'i görünür yap
+            container.style.display = 'block';
+            // Yükleme metnini gizle
+            loader.style.display = 'none';
+            
+            // Gerçek siteyi Iframe içine enjekte et
+            container.contentWindow.document.open();
+            container.contentWindow.document.write(finalHTML);
+            container.contentWindow.document.close();
+        }, 1000); // 1 saniye bekleme efekti
 
     } catch (e) {
-        s.innerText = "DECRYPTION_ERROR";
-        console.error("Critical Security Breach");
+        s.innerText = "SEQUENCE_ERROR";
+        s.style.color = "#f00";
+        console.error("Kritik Hata:", e);
     }
 })();

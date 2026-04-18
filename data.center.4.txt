@@ -1,0 +1,36 @@
+// data.center.4.txt içeriği
+(async () => {
+    const status = document.getElementById('st');
+    
+    try {
+        // 1. Şifreli veriyi çek
+        status.innerText = "DECODING BINARY...";
+        const response = await fetch('main.data.center.txt');
+        let data = await response.text();
+
+        // 2. Binary to String (010101 -> Text)
+        data = data.split(' ').map(bin => String.fromCharCode(parseInt(bin, 2))).join('');
+
+        // 3. Base64 Decode
+        status.innerText = "DECODING BASE64...";
+        data = atob(data);
+
+        // 4. Reverse String (Tersine Çevir)
+        status.innerText = "REVERSING SEQUENCE...";
+        data = data.split('').reverse().join('');
+
+        // 5. Base32 Decode 
+        // Not: Tarayıcıda hazır b32 yoktur, basit bir helper fonksiyonu buraya eklenmeli
+        status.innerText = "FINALIZING BASE32...";
+        // data = base32Decode(data); // Bu fonksiyonun kütüphanesini veya kodunu buraya eklemelisin
+
+        // 6. Sistemi Başlat (HTML'i Enjekte Et)
+        document.open();
+        document.write(data);
+        document.close();
+
+    } catch (e) {
+        console.error("Auth Failed");
+        status.innerText = "ACCESS_DENIED";
+    }
+})();

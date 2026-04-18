@@ -1,10 +1,8 @@
-// data.center.4.txt içeriği
 (async () => {
     const s = document.getElementById('st');
-    const container = document.getElementById('main_container');
+    const container = document.getElementById('m_c');
     const loader = document.getElementById('loader');
     
-    // Base32 Decoder
     const b32d = (d) => {
         const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
         let out = "", shift = 0, accum = 0;
@@ -22,46 +20,35 @@
     };
 
     try {
-        // 1. Dosyayı Çek
-        s.innerText = "ACCESSING DATABASE...";
+        s.innerText = "CONNECTING_TO_DATABASE...";
         const res = await fetch('main.data.center.txt');
-        let raw = await res.text();
+        let data = await res.text();
 
-        // 2. Binary -> String
-        s.innerText = "DECODING BINARY...";
-        let binaryStr = raw.trim().split(/\s+/).map(b => String.fromCharCode(parseInt(b, 2))).join('');
+        // 1. Katman: Base64 Decode
+        s.innerText = "DECRYPTING_PRIMARY...";
+        data = atob(data.trim());
 
-        // 3. Base64 -> String
-        s.innerText = "DECRYPTING B64...";
-        let b64Str = atob(binaryStr);
+        // 2. Katman: Reverse
+        s.innerText = "REVERSING_DATA...";
+        data = data.split('').reverse().join('');
 
-        // 4. Reverse
-        s.innerText = "RESTRUCTURING...";
-        let revStr = b64Str.split('').reverse().join('');
+        // 3. Katman: Base32 Decode
+        s.innerText = "FINAL_AUTHENTICATION...";
+        let finalHTML = b32d(data);
 
-        // 5. Base32 -> Final HTML
-        s.innerText = "FINALIZING...";
-        let finalHTML = b32d(revStr);
-
-        // --- DÜZELTME BURADA ---
-        // Sayfayı silip bozmasın diye Iframe içine basıyoruz
-        s.innerText = "AUTHENTICATED_OK";
+        s.innerText = "ACCESS_GRANTED";
         
         setTimeout(() => {
-            // Iframe'i görünür yap
             container.style.display = 'block';
-            // Yükleme metnini gizle
             loader.style.display = 'none';
             
-            // Gerçek siteyi Iframe içine enjekte et
             container.contentWindow.document.open();
             container.contentWindow.document.write(finalHTML);
             container.contentWindow.document.close();
-        }, 1000); // 1 saniye bekleme efekti
+        }, 800);
 
     } catch (e) {
-        s.innerText = "SEQUENCE_ERROR";
-        s.style.color = "#f00";
-        console.error("Kritik Hata:", e);
+        s.innerText = "ACCESS_DENIED";
+        console.error("Critical Security Failure");
     }
 })();

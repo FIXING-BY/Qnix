@@ -1,36 +1,53 @@
 // data.center.4.txt içeriği
 (async () => {
-    const status = document.getElementById('st');
+    const s = document.getElementById('st');
     
+    // Base32 Decoder Helper (Tarayıcıda default yoktur)
+    const b32d = (d) => {
+        const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+        let out = "", shift = 0, accum = 0;
+        for (const c of d) {
+            const val = alphabet.indexOf(c.toUpperCase());
+            if (val === -1) continue;
+            accum = (accum << 5) | val;
+            shift += 5;
+            if (shift >= 8) {
+                out += String.fromCharCode((accum >> (shift - 8)) & 255);
+                shift -= 8;
+            }
+        }
+        return out;
+    };
+
     try {
-        // 1. Şifreli veriyi çek
-        status.innerText = "DECODING BINARY...";
-        const response = await fetch('main.data.center.txt');
-        let data = await response.text();
+        // 1. Dosyayı Çek
+        s.innerText = "RETRIEVING DATA...";
+        const res = await fetch('main.data.center.txt');
+        let raw = await res.text();
 
-        // 2. Binary to String (010101 -> Text)
-        data = data.split(' ').map(bin => String.fromCharCode(parseInt(bin, 2))).join('');
+        // 2. Katman: BINARY to STRING
+        s.innerText = "DECODING BINARY...";
+        let binaryStr = raw.trim().split(' ').map(b => String.fromCharCode(parseInt(b, 2))).join('');
 
-        // 3. Base64 Decode
-        status.innerText = "DECODING BASE64...";
-        data = atob(data);
+        // 3. Katman: BASE64 DECODE
+        s.innerText = "DECODING BASE64...";
+        let b64Str = atob(binaryStr);
 
-        // 4. Reverse String (Tersine Çevir)
-        status.innerText = "REVERSING SEQUENCE...";
-        data = data.split('').reverse().join('');
+        // 4. Katman: REVERSE (Ters Çevirme)
+        s.innerText = "REVERSING SEQUENCE...";
+        let revStr = b64Str.split('').reverse().join('');
 
-        // 5. Base32 Decode 
-        // Not: Tarayıcıda hazır b32 yoktur, basit bir helper fonksiyonu buraya eklenmeli
-        status.innerText = "FINALIZING BASE32...";
-        // data = base32Decode(data); // Bu fonksiyonun kütüphanesini veya kodunu buraya eklemelisin
+        // 5. Katman: BASE32 DECODE (Final Step)
+        s.innerText = "FINALIZING DECRYPT...";
+        let finalHTML = b32d(revStr);
 
-        // 6. Sistemi Başlat (HTML'i Enjekte Et)
+        // 6. GÖRÜNTÜLEME (Kodları göstermez, siteyi açar)
         document.open();
-        document.write(data);
+        document.write(finalHTML);
         document.close();
 
     } catch (e) {
-        console.error("Auth Failed");
-        status.innerText = "ACCESS_DENIED";
+        s.innerText = "DECRYPTION_ERROR";
+        console.error("Critical Security Breach");
     }
 })();
